@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Canvas</title>
+  </head>
+
+  <body>
+    <canvas
+      width="640"
+      height="480"
+      id="idcanvas"
+      style="border:black 1px solid;"
+    >
+    </canvas>
+    <script type="text/javascript" charset="utf-8">
+      var canvas = document.getElementById("idcanvas");
+      var ctx = canvas.getContext("2d");
+      if (!ctx) {
+        alert("Please upgrade your browser");
+      } else {
+        start();
+      }
+      function start() {
+        var image = new Image();
+        var cadre = new Image();
+        image.src = "img.bmp";
+        cadre.src = "cadre.png";
+
+        let image2 = ctx.getImageData(0, 0, 80, 80);
+        function draw() {
+          ctx.drawImage(cadre, 0, 0);
+          ctx.drawImage(image, 8, 7, 63, 67);
+
+          ctx.drawImage(cadre, 80, 0);
+          Promise.all([createImageBitmap(canvas, 0, 0, 80, 80)]).then(function(
+            img
+          ) {
+            ctx.drawImage(img[0], 88, 7, 63, 67);
+          });
+
+          requestAnimationFrame(draw);
+        }
+
+        draw();
+      }
+    </script>
+  </body>
+</html>

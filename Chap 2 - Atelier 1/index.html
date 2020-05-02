@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Canvas</title>
+  </head>
+  <body>
+    <canvas
+      width="640"
+      height="480"
+      id="idcanvas"
+      style="border:black 1px solid;"
+    >
+    </canvas>
+    <script type="text/javascript" charset="utf-8">
+      var context = document.getElementById("idcanvas").getContext("2d");
+      if (!context) {
+        alert("Please upgrade your browser");
+      } else {
+        start();
+      }
+      function start() {
+        for (let i = 0; i < 6; i++) {
+          for (let j = 0; j < 6; j++) {
+            context.fillStyle = `rgb(${Math.floor(
+              255 - 42.5 * i
+            )}, ${Math.floor(255 - 42.5 * j)}, 0)`;
+            context.fillRect(j * 50, i * 50, 50, 50);
+          }
+        }
+
+        for (let i = 0; i < 6; i++) {
+          for (let j = 0; j < 6; j++) {
+            context.strokeStyle = "green";
+            context.beginPath();
+            context.arc((j * 50) + 25, (i * 50) + 25, 24, 0, 2 * Math.PI);
+            context.stroke();
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

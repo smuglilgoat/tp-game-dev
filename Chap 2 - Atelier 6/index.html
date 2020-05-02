@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Canvas</title>
+</head>
+
+<body>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <canvas height="136" , width="370" id="canvas" style="border: 5px; border-color: black;"></canvas>
+    </div>
+    <script>
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        let mivi = new Image();
+        mivi.src = 'mivi.png';
+        let dots = new Image();
+        dots.src = 'dots.png';
+
+        function draw() {
+            ctx.drawImage(dots, 0, 0);
+            ctx.drawImage(mivi, -canvas.height, 0);
+            ctx.rotate(Math.PI / 2);
+        }
+
+        setInterval(draw, 500);
+    </script>
+</body>
+
+</html>

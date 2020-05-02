@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Canvas</title>
+</head>
+
+<body>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <canvas height="700" , width="400" id="canvas" style="border: 5px; border-color: black;"></canvas>
+    </div>
+    <script>
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        let img1 = new Image();
+        img1.src = 'Panoramic_photo_stitching_example.jpg';
+        let x = 0, y = 0;
+
+        function draw() {
+            ctx.drawImage(img1, x, y);
+            x = x - 2;
+            requestAnimationFrame(draw)
+        }
+
+        draw()
+    </script>
+</body>
+
+</html>

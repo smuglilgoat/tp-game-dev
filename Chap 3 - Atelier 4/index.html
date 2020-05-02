@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Atelier 4</title>
+  </head>
+  <body>
+    <div style="display: flex; justify-content: center; align-items: center;">
+      <canvas
+        height="600"
+        width="800"
+        id="canvas"
+        style="border: 5px; border-color: beige;"
+      ></canvas>
+    </div>
+    <script>
+      let canvas = document.getElementById("canvas");
+      let ctx = canvas.getContext("2d");
+
+      let tileHeight = 26;
+      let tileWidth = 50;
+
+      let spriteX = 2;
+      let spriteY = 0;
+
+      let tileset = [];
+      let map = [
+        [1, 2, 2, 2],
+        [1, 1, 1, 1],
+        [2, 2, 1, 1],
+        [1, 1, 1, 1],
+        [1, 2, 2, 1],
+        [1, 1, 1, 1]
+      ];
+
+      document.addEventListener("keypress", keyPressHandler, false);
+
+      function keyPressHandler(event) {
+        if (
+          event.key == "d" &&
+          spriteX + 1 <= 4 &&
+          map[spriteX + 1 + 1][spriteY + 1] != 2
+        ) {
+          spriteX++;
+        } else if (
+          event.key == "q" &&
+          spriteX - 1 >= -1 &&
+          map[spriteX + 1 - 1][spriteY + 1] != 2
+        ) {
+          spriteX--;
+        }
+        if (
+          event.key == "s" &&
+          spriteY + 1 <= 2 &&
+          map[spriteX + 1][spriteY + 1 + 1] != 2
+        ) {
+          spriteY++;
+        } else if (
+          event.key == "z" &&
+          spriteY - 1 >= -1 &&
+          map[spriteX + 1][spriteY + 1 - 1] != 2
+        ) {
+          spriteY--;
+        }
+      }
+
+      function load() {
+        ctx.strokeText("Loading...", 0, 0);
+
+        let tiles = ["ralph.png", "land.png", "water.png"];
+        let loadedTiles = 0;
+
+        for (var i = 0; i < tiles.length; i++) {
+          tileset[i] = new Image();
+          tileset[i].src = tiles[i];
+          tileset[i].onload = function() {
+            loadedTiles++;
+            if (loadedTiles === tiles.length) {
+              draw();
+            }
+          };
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText("Utilisez W,A,S,D", 30, 19);
+
+        for (let i = 0; i < map.length; i++) {
+          for (let j = 0; j < map[i].length; j++) {
+            tile = map[i][j];
+            ctx.drawImage(
+              tileset[tile],
+              ((i - j) * tileWidth) / 2 + 150,
+              ((i + j) * tileHeight) / 2 + 150
+            );
+          }
+        }
+
+        ctx.drawImage(
+          tileset[0],
+          ((spriteX - spriteY) * tileWidth) / 2 + 150,
+          ((spriteX + spriteY) * tileHeight) / 2 + 150
+        );
+
+        requestAnimationFrame(draw);
+      }
+
+      load();
+    </script>
+  </body>
+</html>

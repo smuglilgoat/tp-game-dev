@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Diggy Doggy Hole v1</title>
+  </head>
+
+  <body>
+    <div style="display: flex; justify-content: center; align-items: center;">
+      <canvas height="512" width="512" id="canvas"></canvas>
+    </div>
+    <script>
+      let canvas = document.getElementById("canvas");
+      let ctx = canvas.getContext("2d");
+
+      let tileSet = new Image();
+      let spritesheet = new Image();
+      tileSet.src = "tiles.png";
+      spritesheet.src = "spritesheet.png";
+
+      const frameLimit = 5;
+      const animationLoop = [0, 1, 2, 3];
+      let loopdIndex = 0;
+      let direction = 0;
+      let frameCount = 0;
+
+      let spriteX = canvas.width / 2;
+      let spriteY = canvas.height / 2;
+
+      let map = [
+        [3, 3, 3, 1, 3, 3, 3, 3],
+        [3, 1, 1, 1, 10, 4, 8, 3],
+        [3, 1, 12, 1, 6, 2, 7, 3],
+        [1, 1, 1, 1, 6, 2, 7, 3],
+        [3, 13, 16, 19, 6, 2, 7, 3],
+        [3, 14, 17, 20, 11, 5, 9, 1],
+        [3, 15, 18, 21, 1, 12, 1, 3],
+        [3, 3, 3, 3, 3, 3, 1, 3]
+      ];
+
+      let keyPresses = {};
+
+      document.addEventListener("keydown", keyDownListener, false);
+      function keyDownListener(event) {
+        keyPresses[event.key] = true;
+      }
+
+      document.addEventListener("keyup", keyUpListener, false);
+      function keyUpListener(event) {
+        keyPresses[event.key] = false;
+      }
+
+      function collisionDetection(x, y) {
+        switch (map[Math.round(x / 64)][Math.round(y / 64)]) {
+          case 3:
+            return false;
+            break;
+          case 12:
+            return false;
+            break;
+          case 13:
+            return false;
+            break;
+          case 14:
+            return false;
+            break;
+          case 15:
+            return false;
+            break;
+          case 16:
+            return false;
+            break;
+          case 17:
+            return false;
+            break;
+          case 18:
+            return false;
+            break;
+          case 19:
+            return false;
+            break;
+          case 20:
+            return false;
+            break;
+          case 21:
+            return false;
+            break;
+          default:
+            return true;
+            break;
+        }
+      }
+
+      function drawSprite(spriteX, spriteY, x, y) {
+        ctx.drawImage(
+          spritesheet,
+          spriteX * 32,
+          spriteY * 40,
+          32,
+          40,
+          x,
+          y,
+          32,
+          40
+        );
+      }
+
+      function draw() {
+        let hasMoved = false;
+
+        for (let i = 0; i < 8; i++) {
+          for (let j = 0; j < 8; j++) {
+            ctx.drawImage(
+              tileSet,
+              (map[i][j] - 1) * 64,
+              0,
+              64,
+              64,
+              i * 64,
+              j * 64,
+              64,
+              64
+            );
+          }
+        }
+
+        if (
+          keyPresses.ArrowUp &&
+          spriteY - 1 > 0 &&
+          collisionDetection(spriteX, spriteY - 1 - 32)
+        ) {
+          spriteY--;
+          direction = 3;
+          hasMoved = true;
+        } else if (
+          keyPresses.ArrowDown &&
+          spriteY + 1 < canvas.height - 40 &&
+          collisionDetection(spriteX, spriteY + 1)
+        ) {
+          spriteY++;
+          direction = 0;
+          hasMoved = true;
+        }
+        if (
+          keyPresses.ArrowLeft &&
+          spriteX - 1 > 0 &&
+          collisionDetection(spriteX - 1 - 32, spriteY)
+        ) {
+          spriteX--;
+          direction = 1;
+          hasMoved = true;
+        } else if (
+          keyPresses.ArrowRight &&
+          spriteX + 1 < canvas.width - 32 &&
+          collisionDetection(spriteX + 1, spriteY)
+        ) {
+          spriteX++;
+          direction = 2;
+          hasMoved = true;
+        }
+
+        if (hasMoved) {
+          frameCount++;
+          if (frameCount >= frameLimit) {
+            frameCount = 0;
+            loopdIndex++;
+            if (loopdIndex >= animationLoop.length) {
+              loopdIndex = 0;
+            }
+          }
+        } else {
+          loopdIndex = 0;
+        }
+
+        drawSprite(animationLoop[loopdIndex], direction, spriteX, spriteY);
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+    </script>
+  </body>
+</html>

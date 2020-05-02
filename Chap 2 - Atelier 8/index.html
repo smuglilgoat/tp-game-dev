@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Canvas</title>
+</head>
+
+<body>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <canvas height="300" , width="300" id="canvas" style="border: 5px; border-color: black;"></canvas>
+    </div>
+    <script>
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        var sun = new Image();
+        var moon = new Image();
+        var earth = new Image();
+        sun.src = 'sun.png';
+        moon.src = 'moon.png';
+        earth.src = 'earth.png';
+
+        function drawInit() {
+            ctx.drawImage(sun, 0, 0);
+
+            ctx.beginPath();
+            ctx.arc(150, 150, 105, 0, Math.PI * 2, false);
+            ctx.strokeStyle = 'rgba(65, 105, 225, 0.4)';
+            ctx.stroke();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, 300, 300);
+            drawInit();
+
+            ctx.save();
+
+            ctx.translate(150, 150);
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0, 0, 2, 2);
+
+            var now = new Date();
+            var seconds = ((now.getSeconds() * 1000) + now.getMilliseconds()) / 1000;
+
+            anglePerSecond = ((Math.PI * 2) / 60);
+            ctx.rotate(anglePerSecond * seconds);
+            ctx.translate(104, 0);
+            ctx.drawImage(earth, -11, -11);
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0, 0, 2, 2);
+
+            anglePerSecond = 12 * ((Math.PI * 2) / 60);
+            ctx.rotate(anglePerSecond * seconds);
+            ctx.translate(0, 25);
+            ctx.drawImage(moon, -4, -4);
+            ctx.fillStyle = 'red';
+            ctx.fillRect(0, 0, 2, 2);
+
+            ctx.restore();
+
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    </script>
+</body>
+
+</html>

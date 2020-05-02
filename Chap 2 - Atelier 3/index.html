@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Canvas</title>
+</head>
+
+<body>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <canvas height="500" , width="1000" id="canvas" style="border: 5px; border-color: black;"></canvas>
+    </div>
+    <script>
+        let canvas = document.getElementById("canvas");
+        let ctx = canvas.getContext("2d");
+        let img1 = new Image();
+        img1.src = 'img1.png';
+
+        for (let i = 0; i < 20; i++) {
+            if (i % 2 == 0) {
+                ctx.fillStyle = "#792729";
+                ctx.fillRect(i * 50, 0, 50, 500);
+            } else {
+                ctx.fillStyle = "#7f292c";
+                ctx.fillRect(i * 50, 0, 50, 500);
+            }
+        }
+
+
+        img1.onload = function () {
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 2; j++) {
+                    ctx.drawImage(img1, i * 250 + 70, j * 250 + 50);
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>
